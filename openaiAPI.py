@@ -1,27 +1,28 @@
 import openai
+import json
 
-openai.api_key = 'API KEY'
+openai.api_key = 'API_KEY'
 
-def get_book_names(description):
-    prompt = f"Given the description '{description}', generate names of 20 books:"
+def get_book_name(description):
+    prompt = f"{description}. Suggest a name for a book:"
     response = openai.Completion.create(
-        engine="text-davinci-003",  # Use the appropriate engine
+        engine="text-davinci-003",
         prompt=prompt,
-        max_tokens=20,
-        n=1,
+        max_tokens=10,
+        n=5,  # Increase the number of book names to generate
         stop=None,
         temperature=0.7,
     )
-    generated_books = response['choices'][0]['text'].split("\n")[:-1]
+    generated_books = [choice['text'].strip() for choice in response['choices']]
     return generated_books
 
 if __name__ == "__main__":
     book_description = input("Enter the description of the book: ")
 
-    book_names = get_book_names(book_description)
+    book_names = get_book_name(book_description)
 
-    print(f"Book names based on the description:\n")
-    for i, book in enumerate(book_names, start=1):
-        print(f"{i}. {book}")
+    # Save the generated book names to a JSON file
+    with open('generated_books.json', 'w') as file:
+        json.dump(book_names, file)
 
-    print("\nEnd of book names.")
+    print(f"Book names based on the description have been saved to 'generated_books.json'.")

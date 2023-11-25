@@ -1,33 +1,49 @@
-from transformers import pipeline
+# Working code
+import openai
 import json
 
-def get_book_info(description):
-    # Load the pre-trained GPT-2 model for text generation
-    text_generator = pipeline(task='text-generation', model='gpt2')
+YOUR_API_KEY = "API KEY"
 
-    # Generate a response based on the book description
-    generated_text = text_generator(description, max_length=50, num_return_sequences=1)[0]['generated_text']
+def chat_with_bot(book_description):
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are an artificial intelligence assistant designed to "
+                "suggest book names based on a given book description."
+            ),
+        },
+        {
+            "role": "user",
+            "content": f"{book_description}",
+        },
+    ]
 
-    # Extract the generated book name from the response
-    sentences = generated_text.split('.')
-    book_name = sentences[0].strip()
+    # Send a message to the bot
+    response = openai.ChatCompletion.create(
+        model="mistral-7b-instruct",
+        messages=messages,
+        api_base="https://api.perplexity.ai",
+        api_key=YOUR_API_KEY,
+    )
 
-    # Create a dictionary with book information
-    book_info = {
-        'book_name': book_name,
-        'description': description,
-        'generated_text': generated_text
-    }
+    # Extract book names from the bot's response
+    book_names = response['choices'][0]['message']['content']
 
-    return book_info
+    # Save book names to a JSON file
+    output_json = {"book_names": book_names}
+    with open("book_names_output.json", "w") as json_file:
+        json.dump(output_json, json_file, indent=2)
 
-# Example usage
-book_description = "It ends with us"
-book_info = get_book_info(book_description)
+    # Print the bot's response
+    print(f"Bot: {book_names}")
+    print("Book names saved to 'book_names_output.json'.")
 
-# Save the book information to a JSON file
-output_file_path = 'generated_book_info.json'
-with open(output_file_path, 'w') as output_file:
-    json.dump(book_info, output_file, indent=2)
+if __name__ == "__main__":
+    # Ask the user for a book description
+    user_input = input("Write a book description: ")
 
-print("Generated Book Information saved to:", output_file_path)
+    # Have a conversation with the bot based on the book description
+    chat_with_bot(user_input)
+
+

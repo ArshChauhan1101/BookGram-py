@@ -1,8 +1,6 @@
 import requests
 import json
-import openai
 
-openai.api_key = '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'
 def get_books(api_key, query, max_results=20):
     base_url = "https://www.googleapis.com/books/v1/volumes"
     params = {
@@ -46,7 +44,7 @@ if __name__ == "__main__":
             output_data.append(book_data)
 
         # Save the data to a JSON file
-        output_file_path = "books_output.json"
+        output_file_path = "BookList.json"
         with open(output_file_path, 'w') as json_file:
             json.dump(output_data, json_file, indent=2)
 
