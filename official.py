@@ -2,8 +2,8 @@ import openai
 import requests
 import json
 
-YOUR_API_KEY_CHAT = "API KEY"
-YOUR_API_KEY_BOOKS = "API KEY"
+YOUR_API_KEY_CHAT = "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"
+YOUR_API_KEY_BOOKS = "AIzaSyBPasAv979guuK3JTztaleOTdQfrjfhsvg"
 
 def chat_with_bot(book_description):
     messages = [

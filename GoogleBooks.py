@@ -18,7 +18,7 @@ def get_books(api_key, query, max_results=20):
         return None
 
 if __name__ == "__main__":
-    api_key = "API_KEY"
+    api_key = "AIzaSyBPasAv979guuK3JTztaleOTdQfrjfhsvg"
     query = input("Enter a book title or Author Name: ")
 
     books = get_books(api_key, query)

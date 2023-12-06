@@ -1,7 +1,7 @@
 import openai
 import json
 
-openai.api_key = 'API_KEY'
+openai.api_key = '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'
 
 def get_book_name(description):
     prompt = f"{description}. Suggest a name for a book:"
